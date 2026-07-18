@@ -74,16 +74,11 @@ function renderSlide(direction = 'next') {
   }
 
   if (existing) {
-    let revealed = false;
-    const reveal = () => {
-      if (revealed) return;
-      revealed = true;
+    existing.classList.add('exit');
+    setTimeout(() => {
       existing.remove();
       stage.appendChild(wrapper);
-    };
-    existing.addEventListener('animationend', reveal, { once: true });
-    existing.classList.add('exit');
-    setTimeout(reveal, 400);
+    }, 300);
   } else {
     stage.appendChild(wrapper);
   }
