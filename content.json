@@ -3,160 +3,207 @@
   "namaKelompok": "Matematika Lanjut",
   "slides": [
     {
-      "title": "📐 Persamaan Lingkaran & Garis Singgung",
+      "title": "Persamaan Lingkaran & Garis Singgung",
+      "type": "cover",
+      "subtitle": "Matematika Lanjut — Geometri Analitik",
       "bullets": [
-        "Matematika Lanjut — Geometri Analitik",
-        "Topik: Persamaan Lingkaran",
-        "Topik: Persamaan Garis Singgung Lingkaran",
-        "Lengkap dengan definisi, rumus, dan contoh soal"
+        "Persamaan Lingkaran (definisi, rumus, contoh)",
+        "Persamaan Garis Singgung Lingkaran",
+        "Lengkap dengan contoh soal & pembahasan"
       ],
-      "notes": "Slide pembuka. Perkenalkan diri dan topik yang akan dibahas.",
+      "notes": "Slide pembuka. Perkenalkan diri, kelompok, dan dua topik utama.",
       "poll": null
     },
     {
-      "title": "🔵 Apa Itu Lingkaran? (Definisi)",
+      "title": "Apa Itu Lingkaran?",
+      "type": "definition",
+      "icon": "⭕",
+      "definition": "Lingkaran adalah himpunan semua titik pada bidang yang berjarak sama dari sebuah titik tetap.",
       "bullets": [
-        "Lingkaran adalah himpunan semua titik yang berjarak sama dari satu titik tetap",
-        "Titik tetap tersebut disebut PUSAT lingkaran",
-        "Jarak tetap dari pusat ke setiap titik disebut JARI-JARI (r)",
-        "Simbol: r > 0 (jari-jari selalu bernilai positif)",
-        "Contoh nyata: roda, jam dinding, koin — semua berbentuk lingkaran!"
+        "Titik tetap itu disebut PUSAT lingkaran",
+        "Jarak tetap dari pusat ke setiap titik disebut JARI-JARI ( r )",
+        "Syarat: r > 0 (jari-jari selalu positif)",
+        "Notasi pusat: titik P(a, b) atau P(0, 0) jika di origin"
       ],
-      "notes": "Tekankan bahwa definisi ini adalah fondasi dari semua rumus yang akan dibahas.",
+      "notes": "Tekankan bahwa definisi ini adalah fondasi. Semua rumus diturunkan dari sini.",
       "poll": null
     },
     {
-      "title": "📏 Rumus Umum — Pusat (0, 0)",
+      "title": "Rumus Lingkaran — Pusat (0, 0)",
+      "type": "formula",
+      "icon": "📐",
+      "context": "Ketika pusat lingkaran tepat di titik asal / origin O(0, 0) :",
+      "formula": "x² + y² = r²",
       "bullets": [
-        "Jika pusat lingkaran berada di titik ORIGIN (0, 0):",
-        "➜  x² + y² = r²",
-        "Artinya: semua titik (x, y) yang memenuhi persamaan ini ada di lingkaran",
-        "r = jari-jari lingkaran",
+        "x dan y adalah koordinat sembarang titik di lingkaran",
+        "r adalah panjang jari-jari",
+        "Bentuk ini adalah kasus khusus — paling sederhana",
         "Contoh: x² + y² = 25  →  pusat (0,0), r = 5"
       ],
-      "notes": "Tunjukkan gambar lingkaran berpusat di origin jika ada whiteboard atau media tambahan.",
+      "notes": "Tunjukkan bahwa r² = 25 berarti r = 5 (akar dari 25). Sering siswa lupa mengakarkan.",
       "poll": null
     },
     {
-      "title": "📏 Rumus Umum — Pusat (a, b)",
+      "title": "Rumus Lingkaran — Pusat (a, b)",
+      "type": "formula",
+      "icon": "📐",
+      "context": "Ketika pusat lingkaran berada di sembarang titik P(a, b) :",
+      "formula": "(x − a)² + (y − b)² = r²",
       "bullets": [
-        "Jika pusat lingkaran berada di titik sembarang (a, b):",
-        "➜  (x − a)² + (y − b)² = r²",
-        "a = koordinat x dari pusat",
-        "b = koordinat y dari pusat",
-        "Contoh: (x−3)² + (y−4)² = 49  →  pusat (3,4), r = 7"
+        "a = koordinat x dari pusat lingkaran",
+        "b = koordinat y dari pusat lingkaran",
+        "Ini adalah rumus UMUM yang berlaku untuk semua posisi pusat",
+        "Contoh: (x−3)² + (y−4)² = 49  →  pusat (3, 4), r = 7"
       ],
-      "notes": "Perhatikan: pada soal sering ditulis (A,B) sebagai nama titik pusat, tapi secara konsep matematika tetap merujuk pada koordinat (a,b).",
+      "notes": "Di soal sering ditulis (A,B) sebagai nama titik pusat — secara konsep tetap merujuk pada nilai koordinat (a,b) di rumus.",
       "poll": null
     },
     {
-      "title": "🤔 Kenapa Ada Dua Bentuk Rumus?",
+      "title": "Kenapa Ada Dua Rumus Lingkaran?",
+      "type": "explanation",
+      "icon": "💡",
       "bullets": [
-        "Pusat (0,0) adalah kasus KHUSUS dari pusat (a,b) saat a=0 dan b=0",
-        "➜  (x−0)² + (y−0)² = r²  menjadi  x² + y² = r²",
-        "Rumus pusat (a,b) adalah bentuk UMUM yang berlaku untuk semua posisi pusat",
-        "Mengapa dipisah? Agar lebih mudah dipahami & dihafal secara bertahap",
-        "💡 Catatan: simbol (A,B) di soal = nama titik pusat; nilai koordinatnya tetap (a,b)"
+        "Rumus pusat (0,0) adalah KASUS KHUSUS dari rumus pusat (a,b)",
+        "Cukup substitusi a=0 dan b=0 ke rumus umum:",
+        "  (x−0)² + (y−0)²  =  r²",
+        "  →  x² + y²  =  r²  ✓",
+        "Dipisah agar lebih mudah dipahami secara bertahap",
+        "� Catatan: (A,B) di soal = nama titik pusat; nilai koordinatnya tetap (a,b) di rumus"
       ],
-      "notes": "Ini slide penting! Banyak siswa bingung kenapa ada dua rumus. Jelaskan hubungannya.",
+      "notes": "Banyak siswa bingung kenapa ada dua. Jelaskan hubungan hierarkis antara keduanya.",
       "poll": {
-        "question": "Mana rumus lingkaran dengan pusat (0,0)?",
-        "options": ["x² + y² = r²", "(x−a)² + (y−b)² = r²", "x² + y² = 2r", "x + y = r"]
+        "question": "Manakah persamaan lingkaran berpusat di (0,0) dengan jari-jari 4?",
+        "options": ["x² + y² = 4", "x² + y² = 16", "(x−4)² + y² = 0", "x + y = 4"]
       }
     },
     {
-      "title": "✏️ Contoh Soal — Persamaan Lingkaran",
+      "title": "Contoh Soal — Persamaan Lingkaran",
+      "type": "example",
+      "icon": "✏️",
       "bullets": [
-        "Soal 1: Tulis persamaan lingkaran, pusat (0,0), r = 6",
-        "  → x² + y² = 36  ✓",
-        "Soal 2: Tulis persamaan lingkaran, pusat (2,−3), r = 5",
-        "  → (x−2)² + (y+3)² = 25  ✓",
-        "Soal 3: Tentukan pusat & jari-jari dari (x−1)² + (y−4)² = 16",
-        "  → Pusat (1, 4), r = 4  ✓"
+        "① Pusat (0,0), r = 6",
+        "   → x² + y² = 36",
+        "② Pusat (2, −3), r = 5",
+        "   → (x−2)² + (y+3)² = 25",
+        "③ Tentukan pusat & r dari: (x−1)² + (y−4)² = 16",
+        "   → Pusat (1, 4)   dan   r = √16 = 4",
+        "④ Tulis bentuk umum: x²+y²−6x+8y−11=0",
+        "   → (x−3)²+(y+4)²=36  →  Pusat(3,−4), r=6"
       ],
-      "notes": "Minta audiens mencoba soal 2 sebelum dibuka jawabannya. Beri waktu 30 detik.",
+      "notes": "Soal ④ adalah soal bentuk umum (melengkapkan kuadrat) — bagus untuk latihan tambahan.",
       "poll": null
     },
     {
-      "title": "📐 Persamaan Garis Singgung — Definisi",
+      "title": "Apa Itu Garis Singgung Lingkaran?",
+      "type": "definition",
+      "icon": "📏",
+      "definition": "Garis singgung lingkaran adalah garis lurus yang menyentuh lingkaran tepat di satu titik, disebut titik singgung.",
       "bullets": [
-        "Garis singgung lingkaran adalah garis yang MENYENTUH lingkaran tepat di SATU titik",
-        "Titik persentuhan disebut titik singgung",
-        "Sifat penting: garis singgung SELALU TEGAK LURUS dengan jari-jari di titik singgung",
-        "Artinya: garis singgung ⊥ garis dari pusat ke titik singgung",
-        "Ini menjadi kunci menurunkan semua rumus garis singgung!"
+        "Garis menyentuh lingkaran hanya di SATU titik (tidak memotong)",
+        "Sifat kunci: garis singgung ⊥ jari-jari di titik singgung",
+        "Artinya: sudut antara garis singgung dan jari-jari = 90°",
+        "Sifat ini menjadi dasar penurunan semua rumus garis singgung"
       ],
-      "notes": "Gambar ilustrasi: lingkaran dengan satu garis yang hanya menyentuh di satu titik sangat membantu.",
+      "notes": "Gambar ilustrasi sangat membantu: lingkaran + satu garis yang hanya menyentuh di satu titik.",
       "poll": null
     },
     {
-      "title": "📐 Rumus Garis Singgung — Pusat (0, 0)",
+      "title": "Rumus Garis Singgung — Pusat (0, 0)",
+      "type": "formula",
+      "icon": "📐",
+      "context": "Lingkaran x² + y² = r² , dengan titik singgung T(x₁, y₁) :",
+      "formula": "x·x₁ + y·y₁ = r²",
       "bullets": [
-        "Lingkaran: x² + y² = r²",
-        "Titik singgung: (x₁, y₁)",
-        "Rumus garis singgung:",
-        "➜  x·x₁ + y·y₁ = r²",
-        "Contoh: Lingkaran x²+y²=25, titik singgung (3,4)",
-        "  → 3x + 4y = 25  ✓"
+        "x₁ dan y₁ adalah koordinat TITIK SINGGUNG (bukan sembarang titik)",
+        "Titik singgung harus berada di lingkaran: x₁² + y₁² = r²",
+        "Contoh: Lingkaran x²+y²=25, titik singgung T(3, 4)",
+        "  → 3x + 4y = 25"
       ],
-      "notes": "Tekankan: x₁ dan y₁ adalah koordinat TITIK SINGGUNG, bukan sembarang titik.",
+      "notes": "Pastikan siswa memahami bahwa (x₁,y₁) adalah titik yang SUDAH DIKETAHUI berada di lingkaran.",
       "poll": null
     },
     {
-      "title": "📐 Rumus Garis Singgung — Pusat (a, b)",
+      "title": "Rumus Garis Singgung — Pusat (a, b)",
+      "type": "formula",
+      "icon": "📐",
+      "context": "Lingkaran (x−a)²+(y−b)²=r² , dengan titik singgung T(x₁, y₁) :",
+      "formula": "(x₁−a)(x−a) + (y₁−b)(y−b) = r²",
       "bullets": [
-        "Lingkaran: (x−a)² + (y−b)² = r²",
-        "Titik singgung: (x₁, y₁)",
-        "Rumus garis singgung:",
-        "➜  (x₁−a)(x−a) + (y₁−b)(y−b) = r²",
-        "Contoh: Lingkaran (x−1)²+(y−2)²=25, titik singgung (4,6)",
+        "Pola rumus sama — hanya digeser sesuai posisi pusat (a,b)",
+        "Titik singgung harus berada di lingkaran: (x₁−a)²+(y₁−b)²=r²",
+        "Contoh: Lingkaran (x−1)²+(y−2)²=25, titik singgung T(4,6)",
         "  → (4−1)(x−1) + (6−2)(y−2) = 25",
-        "  → 3(x−1) + 4(y−2) = 25  →  3x + 4y = 36  ✓"
+        "  → 3(x−1) + 4(y−2) = 25   →   3x + 4y = 36"
       ],
-      "notes": "Bandingkan dengan rumus pusat (0,0) — polanya sama, hanya digeser sesuai posisi pusat.",
+      "notes": "Bandingkan langkah demi langkah dengan rumus pusat (0,0) agar polanya terlihat jelas.",
       "poll": null
     },
     {
-      "title": "🤔 Kenapa Ada Dua Bentuk Rumus Garis Singgung?",
+      "title": "Kenapa Ada Dua Rumus Garis Singgung?",
+      "type": "explanation",
+      "icon": "💡",
       "bullets": [
-        "Sama seperti persamaan lingkaran — pusat (0,0) adalah kasus khusus dari (a,b)",
-        "Saat a=0 dan b=0: (x₁−0)(x−0) + (y₁−0)(y−0) = r²  →  x·x₁ + y·y₁ = r²",
-        "Rumus pusat (a,b) lebih umum dan mencakup semua posisi pusat",
-        "💡 Catatan: (A,B) di soal = nama titik pusat lingkaran, nilainya tetap ditulis (a,b) di rumus",
-        "Prinsip penurunan: manfaatkan sifat tegak lurus antara jari-jari dan garis singgung"
+        "Alasannya sama persis dengan persamaan lingkaran:",
+        "Pusat (0,0) adalah KASUS KHUSUS dari pusat (a,b) saat a=0, b=0",
+        "Substitusi a=0 dan b=0 ke rumus umum garis singgung:",
+        "  (x₁−0)(x−0) + (y₁−0)(y−0) = r²",
+        "  →  x·x₁ + y·y₁ = r²  ✓",
+        "� Catatan: (A,B) di soal = nama titik pusat, bukan nilai tersendiri"
       ],
-      "notes": "Kembali tegaskan hubungan antara dua bentuk rumus ini agar tidak membingungkan.",
+      "notes": "Tunjukkan simetri antara penurunan rumus lingkaran dan garis singgung — polanya sama.",
       "poll": {
-        "question": "Garis singgung lingkaran menyentuh lingkaran di berapa titik?",
-        "options": ["1 titik", "2 titik", "3 titik", "Tidak ada titik"]
+        "question": "Garis singgung dan jari-jari di titik singgung membentuk sudut berapa?",
+        "options": ["45°", "60°", "90°", "180°"]
       }
     },
     {
-      "title": "✏️ Contoh Soal — Garis Singgung",
+      "title": "Garis Tangen — dari Titik di Luar Lingkaran",
+      "type": "formula",
+      "icon": "🔗",
+      "context": "Jika titik P(x₁, y₁) berada di LUAR lingkaran, ada dua garis singgung yang dapat ditarik:",
+      "formula": "PT² = x₁² + y₁² − r²",
       "bullets": [
-        "Soal 1: Lingkaran x²+y²=100, titik singgung (6,8). Tentukan garis singgungnya!",
-        "  → 6x + 8y = 100  →  3x + 4y = 50  ✓",
-        "Soal 2: Lingkaran (x−2)²+(y−3)²=25, titik singgung (5,7). Garis singgungnya?",
-        "  → (5−2)(x−2) + (7−3)(y−3) = 25",
-        "  → 3(x−2) + 4(y−3) = 25  →  3x + 4y = 43  ✓",
-        "Soal 3: Periksa — apakah titik (6,8) ada di lingkaran x²+y²=100?",
-        "  → 36 + 64 = 100 ✓ Ya, titik tersebut ada di lingkaran"
+        "PT = panjang garis singgung dari titik luar ke titik singgung",
+        "Syarat: titik di luar lingkaran → x₁²+y₁² > r² (untuk pusat di origin)",
+        "Jika di dalam: x₁²+y₁² < r² (tidak ada garis singgung nyata)",
+        "Contoh: P(6,0), lingkaran x²+y²=25",
+        "  → PT² = 36+0−25 = 11   →   PT = √11"
       ],
-      "notes": "Soal 3 adalah pengingat penting: garis singgung hanya bisa dihitung jika titik singgung memang berada di lingkaran!",
+      "notes": "Ini konsep garis tangen dari titik eksternal. Berguna untuk soal-soal lanjutan.",
       "poll": null
     },
     {
-      "title": "📝 Rangkuman & Kesimpulan",
+      "title": "Contoh Soal — Garis Singgung",
+      "type": "example",
+      "icon": "✏️",
       "bullets": [
-        "🔵 Lingkaran pusat (0,0): x² + y² = r²",
-        "🔵 Lingkaran pusat (a,b): (x−a)² + (y−b)² = r²",
-        "📐 Garis singgung di (x₁,y₁) — pusat (0,0): x·x₁ + y·y₁ = r²",
-        "📐 Garis singgung di (x₁,y₁) — pusat (a,b): (x₁−a)(x−a)+(y₁−b)(y−b)=r²",
-        "💡 Kunci: garis singgung ⊥ jari-jari di titik singgung",
-        "💡 (A,B) di soal merujuk pada nilai koordinat pusat (a,b) dalam rumus",
-        "Ada pertanyaan? Silakan angkat tangan! ✋"
+        "① Lingkaran x²+y²=100, titik singgung T(6, 8)",
+        "   Cek dulu: 36+64=100 ✓ (titik ada di lingkaran)",
+        "   → 6x + 8y = 100   →   3x + 4y = 50",
+        "② Lingkaran (x−2)²+(y−3)²=25, titik singgung T(5, 7)",
+        "   Cek: (5−2)²+(7−3)²=9+16=25 ✓",
+        "   → 3(x−2) + 4(y−3) = 25   →   3x + 4y = 43",
+        "③ Panjang tangen dari P(7,0) ke x²+y²=25",
+        "   → PT = √(49+0−25) = √24 = 2√6"
       ],
-      "notes": "Slide penutup. Buka sesi tanya jawab. Gunakan fitur angkat tangan dari HP peserta.",
+      "notes": "Selalu ingatkan siswa untuk MEMVERIFIKASI titik singgung benar-benar ada di lingkaran sebelum menghitung.",
+      "poll": null
+    },
+    {
+      "title": "Rangkuman Lengkap",
+      "type": "summary",
+      "icon": "📝",
+      "bullets": [
+        "PERSAMAAN LINGKARAN",
+        "  Pusat (0,0)  :  x² + y² = r²",
+        "  Pusat (a,b)  :  (x−a)² + (y−b)² = r²",
+        "GARIS SINGGUNG di titik (x₁, y₁)",
+        "  Pusat (0,0)  :  x·x₁ + y·y₁ = r²",
+        "  Pusat (a,b)  :  (x₁−a)(x−a)+(y₁−b)(y−b)=r²",
+        "KUNCI: garis singgung ⊥ jari-jari di titik singgung",
+        "Rumus pusat (0,0) = kasus khusus saat a=0 dan b=0"
+      ],
+      "notes": "Slide penutup. Buka sesi tanya jawab. Minta peserta angkat tangan lewat HP.",
       "poll": null
     }
   ]

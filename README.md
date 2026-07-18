@@ -92,4 +92,3 @@ Kontroler (HP)     : http://<IP-laptop-kamu>:3000/audience.html
   otomatis berubah jadi form rating.
 
 Selamat presentasi! 🎤
-# presentation-slide
