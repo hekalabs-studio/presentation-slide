@@ -1,18 +1,13 @@
 {
   "judulPresentasi": "Persamaan Lingkaran & Garis Singgung",
-  "namaKelompok": "Matematika Lanjut",
+  "namaKelompok": "Kelompok 6",
   "slides": [
     {
       "title": "Persamaan Lingkaran & Garis Singgung",
       "type": "cover",
+      "kelompokLabel": "Kelompok 6",
+      "jumlahAnggota": 4,
       "subtitle": "Matematika Lanjut — Geometri Analitik",
-      "kelompok": "Kelompok 6",
-      "anggota": [
-        "1. Jeryco Fabriant / 10",
-        "2. Novemas Heka Alfarizi / 25",
-        "3. Nadinda Noviansyah Utari / 19",
-        "4. Sultan Muhammad Hanin / 32"
-      ],
       "bullets": [
         "Persamaan Lingkaran (definisi, rumus, contoh)",
         "Persamaan Garis Singgung Lingkaran",
