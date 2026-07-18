@@ -453,6 +453,36 @@ body {
   to   { opacity: 1; transform: scale(1); }
 }
 
+/* ---- Two-column layout for slides with diagrams ---- */
+.slide-two-col {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 40px;
+  align-items: start;
+}
+.col-text { min-width: 0; }
+.col-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeUp 0.6s 0.4s both;
+}
+.diag-svg {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(79,209,197,0.15);
+  border-radius: 20px;
+  padding: 12px;
+}
+
+@media (max-width: 900px) {
+  .slide-two-col { grid-template-columns: 1fr; }
+  .col-diagram { justify-content: flex-start; }
+  .diag-svg { max-width: 220px; }
+}
+
 /* ---- Progress bar ---- */
 .progress-bar {
   height: 2px;
