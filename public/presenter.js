@@ -85,12 +85,19 @@ function renderSlide(direction = 'next') {
 function buildCover(slide) {
   const div = document.createElement('div');
   div.className = 'slide-cover';
+
+  // Pisahkan baris pertama (nama kelompok) dari anggota
+  const bullets = slide.bullets || [];
+  const kelompokLabel = bullets[0] || '';
+  const anggota = bullets.slice(1);
+
   div.innerHTML = `
     <div class="cover-badge">${slide.namaKelompok || content.namaKelompok || 'Matematika Lanjut'}</div>
     <h1>${slide.title}</h1>
     <p class="cover-sub">${slide.subtitle || ''}</p>
+    ${kelompokLabel ? `<div class="cover-group-label">${kelompokLabel}</div>` : ''}
     <div class="cover-topics">
-      ${(slide.bullets || []).map(b => `<div class="topic-chip">${b}</div>`).join('')}
+      ${anggota.map(b => `<div class="topic-chip">${b}</div>`).join('')}
     </div>`;
   return div;
 }
