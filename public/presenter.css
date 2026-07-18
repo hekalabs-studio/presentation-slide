@@ -20,7 +20,7 @@ body {
   padding: 14px 28px;
   border-bottom: 1px solid var(--line-on-ink);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--slate);
   flex-shrink: 0;
   z-index: 10;
@@ -50,6 +50,7 @@ body {
   padding: 32px 80px;
   overflow: hidden;
   position: relative;
+  --slate: #B0B8C8;
 }
 
 /* ---- Slide wrapper with enter animation ---- */
@@ -106,6 +107,7 @@ body {
   color: var(--slate);
   margin-bottom: 40px;
   animation: fadeUp 0.5s 0.3s both;
+  font-weight: 500;
 }
 .slide-cover .cover-topics {
   display: flex;
@@ -133,6 +135,7 @@ body {
   color: var(--slate);
   line-height: 1.8;
   animation: fadeUp 0.5s 0.45s both;
+  font-weight: 500;
 }
 
 /* ---- Decorative circle on cover ---- */
@@ -198,6 +201,7 @@ body {
   color: var(--slate);
   margin-bottom: 16px;
   animation: fadeUp 0.4s 0.1s both;
+  font-weight: 500;
 }
 .slide-formula .formula-box {
   background: var(--ink-soft);
@@ -302,7 +306,7 @@ body {
 }
 .slide-bullets li {
   font-size: clamp(15px, 1.8vw, 22px);
-  font-weight: 400;
+  font-weight: 500;
   color: var(--fg-on-ink);
   padding-left: 26px;
   position: relative;
