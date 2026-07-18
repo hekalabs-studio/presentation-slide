@@ -2,6 +2,7 @@ const socket = io();
 let content = null;
 let currentSlide = 0;
 let activePoll = null;
+let navCooldown = false;
 
 const $ = (id) => document.getElementById(id);
 
@@ -14,6 +15,14 @@ fetch('/api/content').then(r => r.json()).then(c => {
   socket.emit('presenter:join');
 });
 
+// ---- Nav debounce ----
+function nav(event) {
+  if (navCooldown) return;
+  navCooldown = true;
+  socket.emit(event);
+  setTimeout(() => { navCooldown = false; }, 600);
+}
+
 // ---- Dots & progress ----
 function renderDots() {
   const wrap = $('slideDots');
@@ -23,7 +32,12 @@ function renderDots() {
     d.className = 'dot' + (i === currentSlide ? ' active' : i < currentSlide ? ' visited' : '');
     d.title = content.slides[i].title;
     d.style.cursor = 'pointer';
-    d.onclick = () => socket.emit('presenter:goToSlide', i);
+    d.onclick = () => {
+      if (navCooldown) return;
+      navCooldown = true;
+      socket.emit('presenter:goToSlide', i);
+      setTimeout(() => { navCooldown = false; }, 600);
+    };
     wrap.appendChild(d);
   });
 }
@@ -60,11 +74,16 @@ function renderSlide(direction = 'next') {
   }
 
   if (existing) {
-    existing.addEventListener('animationend', () => {
+    let revealed = false;
+    const reveal = () => {
+      if (revealed) return;
+      revealed = true;
       existing.remove();
       stage.appendChild(wrapper);
-    }, { once: true });
+    };
+    existing.addEventListener('animationend', reveal, { once: true });
     existing.classList.add('exit');
+    setTimeout(reveal, 400);
   } else {
     stage.appendChild(wrapper);
   }
@@ -310,8 +329,8 @@ socket.on('poll:update', (poll) => {
 });
 
 // ---- Controls ----
-$('prevBtn').onclick = () => socket.emit('presenter:prevSlide');
-$('nextBtn').onclick = () => socket.emit('presenter:nextSlide');
+$('prevBtn').onclick = () => nav('presenter:prevSlide');
+$('nextBtn').onclick = () => nav('presenter:nextSlide');
 $('pollBtn').onclick = () => socket.emit('presenter:startPoll');
 $('endPollBtn').onclick = () => socket.emit('presenter:endPoll');
 $('endBtn').onclick = () => {
