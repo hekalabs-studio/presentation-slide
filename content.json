@@ -7,6 +7,12 @@
       "type": "cover",
       "kelompokLabel": "Kelompok 6",
       "jumlahAnggota": 4,
+      "anggota": [
+        "1. Jeryco Fabriant / 10",
+        "2. Novemas Heka Alfarizi / 25",
+        "3. Nadinda Noviansyah Utari / 19",
+        "4. Sultan Muhammad Hanin / 32"
+      ],
       "subtitle": "Matematika Lanjut — Geometri Analitik",
       "bullets": [
         "Persamaan Lingkaran (definisi, rumus, contoh)",

@@ -83,12 +83,12 @@ function buildCover(slide) {
   const div = document.createElement('div');
   div.className = 'slide-cover';
   const kelompok = slide.kelompokLabel || slide.namaKelompok || content.namaKelompok || 'Kelompok 6';
-  const jumlah = slide.jumlahAnggota || content.jumlahAnggota;
+  const anggota = slide.anggota || [];
   div.innerHTML = `
     <div class="cover-badge">${kelompok}</div>
     <h1>${slide.title}</h1>
     <p class="cover-sub">${slide.subtitle || ''}</p>
-    ${jumlah ? `<p class="cover-anggota">👥 Beranggotakan ${jumlah} Orang</p>` : ''}
+    ${anggota.length ? `<div class="cover-anggota">👥 Anggota :<br>${anggota.join('<br>')}</div>` : ''}
     <div class="cover-topics">
       ${(slide.bullets || []).map(b => `<div class="topic-chip">${b}</div>`).join('')}
     </div>`;
