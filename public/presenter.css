@@ -169,12 +169,6 @@ body {
 }
 
 /* ---- DEFINITION slide ---- */
-.slide-definition .def-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-  display: block;
-  animation: popIn 0.4s 0.1s both;
-}
 .slide-definition .def-box {
   background: linear-gradient(135deg, rgba(79,209,197,0.12), rgba(79,209,197,0.04));
   border: 1px solid rgba(79,209,197,0.3);
@@ -235,20 +229,7 @@ body {
 }
 
 /* ---- EXPLANATION slide ---- */
-.slide-explanation .exp-icon {
-  font-size: 40px;
-  margin-bottom: 20px;
-  display: block;
-  animation: popIn 0.4s 0.05s both;
-}
-
 /* ---- EXAMPLE slide ---- */
-.slide-example .ex-icon {
-  font-size: 36px;
-  margin-bottom: 16px;
-  display: block;
-  animation: popIn 0.4s 0.05s both;
-}
 
 /* ---- SUMMARY slide ---- */
 .slide-summary .sum-grid {
@@ -453,34 +434,42 @@ body {
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* ---- Two-column layout for slides with diagrams ---- */
+/* ---- Two-column layout ---- */
 .slide-two-col {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 40px;
+  grid-template-columns: 1fr 290px;
+  gap: 36px;
   align-items: start;
+  width: 100%;
 }
 .col-text { min-width: 0; }
 .col-diagram {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  animation: fadeUp 0.6s 0.4s both;
+  padding-top: 8px;
+  animation: fadeUp 0.6s 0.3s both;
 }
 .diag-svg {
   width: 100%;
-  max-width: 300px;
+  max-width: 280px;
   height: auto;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(79,209,197,0.15);
-  border-radius: 20px;
-  padding: 12px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(79,209,197,0.18);
+  border-radius: 18px;
+  padding: 10px;
+}
+@media (max-width: 860px) {
+  .slide-two-col { grid-template-columns: 1fr; }
+  .diag-svg { max-width: 200px; }
 }
 
-@media (max-width: 900px) {
-  .slide-two-col { grid-template-columns: 1fr; }
-  .col-diagram { justify-content: flex-start; }
-  .diag-svg { max-width: 220px; }
+/* ---- Slide icon ---- */
+.slide-icon {
+  font-size: 44px;
+  display: block;
+  margin-bottom: 12px;
+  animation: popIn 0.4s 0.05s both;
 }
 
 /* ---- Progress bar ---- */
