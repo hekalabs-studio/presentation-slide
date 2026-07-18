@@ -226,7 +226,10 @@ function buildPollBox(poll) {
       <div class="poll-countdown" id="pollCountdown">⏱️ 60 detik tersisa</div>
       <div class="poll-options-large" id="pollOptionsContainer">${optionsHtml}</div>
       <div class="poll-explanation" id="pollExplanation" hidden>💡 ${poll.explanation || ''}</div>
-      <button class="poll-close-btn" id="pollCloseBtn">Tutup Polling</button>
+      <div class="poll-actions">
+        <button class="poll-reveal-btn" id="pollRevealBtn">Tunjukkan Jawaban</button>
+        <button class="poll-close-btn" id="pollCloseBtn">Tutup Polling</button>
+      </div>
     </div>`;
   const countdownEl = div.querySelector('#pollCountdown');
   const optionsContainer = div.querySelector('#pollOptionsContainer');
@@ -253,6 +256,11 @@ function buildPollBox(poll) {
     });
     if (explanationEl) explanationEl.hidden = false;
   }
+  div.querySelector('#pollRevealBtn').onclick = () => {
+    clearInterval(timer);
+    if (countdownEl) countdownEl.hidden = true;
+    revealPollAnswers();
+  };
   div.querySelector('#pollCloseBtn').onclick = () => {
     clearInterval(timer);
     const el = document.getElementById('pollOverlay');

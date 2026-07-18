@@ -435,6 +435,28 @@ body {
   text-align: left;
   margin-bottom: 24px;
 }
+.poll-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.poll-reveal-btn {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(14px, 1.5vw, 18px);
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: 2px solid var(--amber);
+  background: var(--amber);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.poll-reveal-btn:hover {
+  background: #f9b233;
+  transform: translateY(-1px);
+}
 .poll-close-btn {
   font-family: var(--font-body);
   font-weight: 700;
