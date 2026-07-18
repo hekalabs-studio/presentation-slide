@@ -125,6 +125,15 @@ body {
 .slide-cover .topic-chip:nth-child(1) { border-left: 3px solid var(--teal); }
 .slide-cover .topic-chip:nth-child(2) { border-left: 3px solid var(--amber); }
 .slide-cover .topic-chip:nth-child(3) { border-left: 3px solid var(--coral); }
+.slide-cover .cover-anggota {
+  margin: 20px auto 0;
+  max-width: 500px;
+  text-align: left;
+  font-size: clamp(13px, 1.3vw, 15px);
+  color: var(--slate);
+  line-height: 1.8;
+  animation: fadeUp 0.5s 0.45s both;
+}
 
 /* ---- Decorative circle on cover ---- */
 .slide-cover::before {

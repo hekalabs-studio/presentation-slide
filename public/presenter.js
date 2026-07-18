@@ -1,3 +1,4 @@
+/* presenter.js */
 const socket = io();
 let content = null;
 let currentSlide = 0;
@@ -5,154 +6,156 @@ let activePoll = null;
 
 const $ = (id) => document.getElementById(id);
 
-// ---- Bootstrap ----
+// ── Bootstrap ──────────────────────────────────────────────────
 fetch('/api/content').then(r => r.json()).then(c => {
   content = c;
   $('namaKelompok').textContent = c.namaKelompok || '';
   renderDots();
+  updateProgress();
   renderSlide();
   socket.emit('presenter:join');
 });
 
-// ---- Dots & progress ----
+// ── Nav debounce ───────────────────────────────────────────────
+let navCooldown = false;
+function nav(event) {
+  if (navCooldown) return;
+  navCooldown = true;
+  socket.emit(event);
+  setTimeout(() => { navCooldown = false; }, 600);
+}
+
+// ── Dots & progress ────────────────────────────────────────────
 function renderDots() {
+  if (!content) return;
   const wrap = $('slideDots');
   wrap.innerHTML = '';
-  content.slides.forEach((_, i) => {
+  content.slides.forEach((s, i) => {
     const d = document.createElement('div');
     d.className = 'dot' + (i === currentSlide ? ' active' : i < currentSlide ? ' visited' : '');
-    d.title = content.slides[i].title;
+    d.title = s.title;
     d.style.cursor = 'pointer';
-    d.onclick = () => socket.emit('presenter:goToSlide', i);
+    d.onclick = () => {
+      if (navCooldown) return;
+      navCooldown = true;
+      socket.emit('presenter:goToSlide', i);
+      setTimeout(() => { navCooldown = false; }, 600);
+    };
     wrap.appendChild(d);
   });
 }
 
 function updateProgress() {
-  const pct = ((currentSlide) / (content.slides.length - 1)) * 100;
-  $('progressFill').style.width = pct + '%';
-  $('slideCounter').textContent = `${currentSlide + 1} / ${content.slides.length}`;
-}
-
-// ---- Main slide renderer ----
-function renderSlide(direction = 'next') {
   if (!content) return;
-  const slide = content.slides[currentSlide];
-  const stage = $('stage');
-
-  // Animate out existing wrapper
-  const existing = stage.querySelector('.slide-wrapper');
-  if (existing) {
-    existing.classList.add('exit');
-    setTimeout(() => existing.remove(), 280);
-  }
-
-  const wrapper = document.createElement('div');
-  wrapper.className = 'slide-wrapper';
-
-  // Route to correct renderer
-  const type = slide.type || 'default';
-  switch (type) {
-    case 'cover':       wrapper.appendChild(buildCover(slide)); break;
-    case 'definition':  wrapper.appendChild(buildDefinition(slide)); break;
-    case 'formula':     wrapper.appendChild(buildFormula(slide)); break;
-    case 'explanation': wrapper.appendChild(buildExplanation(slide)); break;
-    case 'example':     wrapper.appendChild(buildExample(slide)); break;
-    case 'summary':     wrapper.appendChild(buildSummary(slide)); break;
-    default:            wrapper.appendChild(buildDefault(slide)); break;
-  }
-
-  // Poll box (shared across types)
-  if (activePoll) {
-    wrapper.appendChild(buildPollBox(activePoll));
-  }
-
-  setTimeout(() => stage.appendChild(wrapper), existing ? 260 : 0);
-
-  // Poll button visibility
-  $('pollBtn').hidden = !slide.poll;
-  updateProgress();
-  renderDots();
+  const total = content.slides.length - 1 || 1;
+  $('progressFill').style.width = (currentSlide / total * 100) + '%';
+  $('slideCounter').textContent = `${currentSlide + 1} / ${content.slides.length}`;
   $('prevBtn').disabled = currentSlide === 0;
   $('nextBtn').disabled = currentSlide === content.slides.length - 1;
 }
 
-// ---- Slide builders ----
+// ── Main renderer ──────────────────────────────────────────────
+function renderSlide() {
+  if (!content) return;
+  const slide = content.slides[currentSlide];
+  if (!slide) return;
 
+  const stage = $('stage');
+  const existing = stage.querySelector('.slide-wrapper');
+
+  function doRender() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'slide-wrapper';
+
+    if      (slide.type === 'cover')       wrapper.appendChild(buildCover(slide));
+    else if (slide.type === 'definition')  wrapper.appendChild(buildDefinition(slide));
+    else if (slide.type === 'formula')     wrapper.appendChild(buildFormula(slide));
+    else if (slide.type === 'explanation') wrapper.appendChild(buildExplanation(slide));
+    else if (slide.type === 'example')     wrapper.appendChild(buildExample(slide));
+    else if (slide.type === 'summary')     wrapper.appendChild(buildSummary(slide));
+    else                                   wrapper.appendChild(buildDefault(slide));
+
+    if (activePoll) wrapper.appendChild(buildPollBox(activePoll));
+
+    stage.appendChild(wrapper);
+    stage.scrollTop = 0;
+    $('pollBtn').hidden = !slide.poll;
+    renderDots();
+    updateProgress();
+  }
+
+  if (existing) {
+    existing.classList.add('exit');
+    setTimeout(() => {
+      if (existing.parentNode) existing.remove();
+      doRender();
+    }, 300);
+  } else {
+    doRender();
+  }
+}
+
+// ── Slide builders ─────────────────────────────────────────────
 function buildCover(slide) {
+  const bullets = slide.bullets || [];
+  const groupLabel = bullets[0] || '';
+  const members = bullets.slice(1);
   const div = document.createElement('div');
   div.className = 'slide-cover';
   div.innerHTML = `
-    <div class="cover-badge">${slide.namaKelompok || content.namaKelompok || 'Matematika Lanjut'}</div>
+    <div class="cover-badge">${content.namaKelompok || ''}</div>
     <h1>${slide.title}</h1>
     <p class="cover-sub">${slide.subtitle || ''}</p>
+    ${slide.kelompok ? `<div class="cover-group-label">${slide.kelompok}</div>` : (groupLabel ? `<div class="cover-group-label">${groupLabel}</div>` : '')}
+    ${slide.anggota && slide.anggota.length ? `<div class="cover-anggota">${slide.anggota.join('<br>')}</div>` : ''}
     <div class="cover-topics">
-      ${(slide.bullets || []).map(b => `<div class="topic-chip">${b}</div>`).join('')}
+      ${(slide.kelompok ? bullets : members).map(b => `<div class="topic-chip">${b}</div>`).join('')}
     </div>`;
   return div;
 }
 
 function buildDefinition(slide) {
   const div = document.createElement('div');
-  div.className = 'slide-definition';
   div.innerHTML = `
-    <span class="def-icon">${slide.icon || '📌'}</span>
+    <span class="slide-icon">${slide.icon || '📌'}</span>
     <div class="slide-title-text">${slide.title}</div>
-    ${slide.definition ? `
-    <div class="def-box">
-      <div class="def-label">Definisi</div>
-      ${slide.definition}
-    </div>` : ''}`;
-  if (slide.bullets && slide.bullets.length) {
-    div.appendChild(buildBullets(slide.bullets, 0.3));
-  }
+    ${slide.definition ? `<div class="def-box"><div class="def-label">Definisi</div>${slide.definition}</div>` : ''}`;
+  if (slide.bullets && slide.bullets.length) div.appendChild(buildBullets(slide.bullets));
   return div;
 }
 
 function buildFormula(slide) {
   const div = document.createElement('div');
-  div.className = 'slide-formula';
   div.innerHTML = `
     <div class="slide-title-text">
       <span class="title-icon">${slide.icon || '📐'}</span>${slide.title}
     </div>
     ${slide.context ? `<div class="formula-context">${slide.context}</div>` : ''}
-    <div class="formula-box">
-      <div class="formula-text">${slide.formula || ''}</div>
-    </div>`;
-  if (slide.bullets && slide.bullets.length) {
-    div.appendChild(buildBullets(slide.bullets, 0.35));
-  }
+    <div class="formula-box"><div class="formula-text">${slide.formula || ''}</div></div>`;
+  if (slide.bullets && slide.bullets.length) div.appendChild(buildBullets(slide.bullets));
   return div;
 }
 
 function buildExplanation(slide) {
   const div = document.createElement('div');
-  div.className = 'slide-explanation';
   div.innerHTML = `
-    <span class="exp-icon">${slide.icon || '💡'}</span>
+    <span class="slide-icon">${slide.icon || '💡'}</span>
     <div class="slide-title-text">${slide.title}</div>`;
-  if (slide.bullets && slide.bullets.length) {
-    div.appendChild(buildBullets(slide.bullets, 0.2));
-  }
+  if (slide.bullets && slide.bullets.length) div.appendChild(buildBullets(slide.bullets));
   return div;
 }
 
 function buildExample(slide) {
   const div = document.createElement('div');
-  div.className = 'slide-example';
   div.innerHTML = `
-    <span class="ex-icon">${slide.icon || '✏️'}</span>
+    <span class="slide-icon">${slide.icon || '✏️'}</span>
     <div class="slide-title-text">${slide.title}</div>`;
-  if (slide.bullets && slide.bullets.length) {
-    div.appendChild(buildBullets(slide.bullets, 0.15));
-  }
+  if (slide.bullets && slide.bullets.length) div.appendChild(buildBullets(slide.bullets));
   return div;
 }
 
 function buildSummary(slide) {
   const div = document.createElement('div');
-  div.className = 'slide-summary';
   div.innerHTML = `
     <div class="slide-title-text">
       <span class="title-icon">${slide.icon || '📝'}</span>${slide.title}
@@ -173,34 +176,29 @@ function buildSummary(slide) {
         </div>
       </div>
     </div>`;
-  const remaining = (slide.bullets || []).slice(4);
-  if (remaining.length) {
-    div.appendChild(buildBullets(remaining, 0.3));
-  }
+  const extra = (slide.bullets || []).slice(4);
+  if (extra.length) div.appendChild(buildBullets(extra));
   return div;
 }
 
 function buildDefault(slide) {
   const div = document.createElement('div');
   div.innerHTML = `<div class="slide-title-text">${slide.title}</div>`;
-  if (slide.bullets && slide.bullets.length) {
-    div.appendChild(buildBullets(slide.bullets));
-  }
+  if (slide.bullets && slide.bullets.length) div.appendChild(buildBullets(slide.bullets));
   return div;
 }
 
-function buildBullets(bullets, baseDelay = 0.15) {
+function buildBullets(bullets) {
   const ul = document.createElement('ul');
   ul.className = 'slide-bullets';
   bullets.forEach((b, i) => {
     const li = document.createElement('li');
-    // Detect indented lines (start with spaces or special chars)
-    const isIndented = b.startsWith('  ') || b.startsWith('   ');
-    const isSectionHeader = b.startsWith('PERSAMAAN') || b.startsWith('GARIS') || b.startsWith('KUNCI');
-    li.textContent = b.replace(/^[\s]+/, '');
-    if (isIndented)     li.classList.add('indented');
-    if (isSectionHeader) li.classList.add('section-header');
-    li.style.animationDelay = (baseDelay + i * 0.07) + 's';
+    const isIndented = /^\s{2,}/.test(b);
+    const isHeader   = /^(PERSAMAAN|GARIS SINGGUNG|KUNCI)/.test(b);
+    li.textContent = b.replace(/^\s+/, '');
+    if (isIndented) li.classList.add('indented');
+    if (isHeader)   li.classList.add('section-header');
+    li.style.animationDelay = (0.1 + i * 0.07) + 's';
     ul.appendChild(li);
   });
   return ul;
@@ -211,19 +209,19 @@ function buildPollBox(poll) {
   div.className = 'poll-box';
   div.id = 'pollBox';
   const total = poll.votes.reduce((a, b) => a + b, 0) || 1;
-  const bars = poll.options.map((opt, i) => {
-    const pct = Math.round((poll.votes[i] / total) * 100);
-    return `<div class="poll-bar-row">
-      <div class="poll-bar-label">${opt}</div>
-      <div class="poll-bar-track"><div class="poll-bar-fill" style="width:${pct}%"></div></div>
-      <div class="poll-bar-count">${poll.votes[i]}</div>
-    </div>`;
-  }).join('');
-  div.innerHTML = `<div class="poll-question">📊 ${poll.question}</div>${bars}`;
+  div.innerHTML = `<div class="poll-question">📊 ${poll.question}</div>` +
+    poll.options.map((opt, i) => {
+      const pct = Math.round(poll.votes[i] / total * 100);
+      return `<div class="poll-bar-row">
+        <div class="poll-bar-label">${opt}</div>
+        <div class="poll-bar-track"><div class="poll-bar-fill" style="width:${pct}%"></div></div>
+        <div class="poll-bar-count">${poll.votes[i]}</div>
+      </div>`;
+    }).join('');
   return div;
 }
 
-// ---- Socket events ----
+// ── Socket events ──────────────────────────────────────────────
 socket.on('state:update', (state) => {
   currentSlide = state.currentSlide;
   renderSlide();
@@ -253,7 +251,7 @@ socket.on('poll:update', (poll) => {
   const existing = $('pollBox');
   if (!poll) {
     if (existing) existing.remove();
-    $('pollBtn').hidden = !(content && content.slides[currentSlide].poll);
+    $('pollBtn').hidden = !(content && content.slides[currentSlide] && content.slides[currentSlide].poll);
     $('endPollBtn').hidden = true;
     return;
   }
@@ -265,9 +263,9 @@ socket.on('poll:update', (poll) => {
   wrapper.appendChild(buildPollBox(poll));
 });
 
-// ---- Controls ----
-$('prevBtn').onclick = () => socket.emit('presenter:prevSlide');
-$('nextBtn').onclick = () => socket.emit('presenter:nextSlide');
+// ── Controls ───────────────────────────────────────────────────
+$('prevBtn').onclick = () => nav('presenter:prevSlide');
+$('nextBtn').onclick = () => nav('presenter:nextSlide');
 $('pollBtn').onclick = () => socket.emit('presenter:startPoll');
 $('endPollBtn').onclick = () => socket.emit('presenter:endPoll');
 $('endBtn').onclick = () => {
@@ -277,6 +275,7 @@ $('endBtn').onclick = () => {
 };
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' || e.key === ' ') socket.emit('presenter:nextSlide');
-  if (e.key === 'ArrowLeft')                   socket.emit('presenter:prevSlide');
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowRight' || e.key === ' ') nav('presenter:nextSlide');
+  if (e.key === 'ArrowLeft') nav('presenter:prevSlide');
 });
