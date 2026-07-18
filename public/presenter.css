@@ -266,10 +266,12 @@ body {
 .slide-title-text {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(26px, 3.5vw, 48px);
-  margin: 0 0 24px 0;
-  line-height: 1.15;
+  font-size: clamp(22px, 2.8vw, 40px);
+  margin: 0 0 20px 0;
+  line-height: 1.2;
   animation: fadeUp 0.45s 0.05s both;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 .slide-title-text .title-icon {
   display: inline-block;
@@ -437,8 +439,8 @@ body {
 /* ---- Two-column layout ---- */
 .slide-two-col {
   display: grid;
-  grid-template-columns: 1fr 290px;
-  gap: 36px;
+  grid-template-columns: 1fr 260px;
+  gap: 28px;
   align-items: start;
   width: 100%;
 }
@@ -447,21 +449,22 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 8px;
+  padding-top: 4px;
   animation: fadeUp 0.6s 0.3s both;
 }
 .diag-svg {
-  width: 100%;
-  max-width: 280px;
-  height: auto;
+  width: 260px;
+  height: 260px;
   background: rgba(255,255,255,0.025);
   border: 1px solid rgba(79,209,197,0.18);
   border-radius: 18px;
-  padding: 10px;
+  padding: 0;
+  display: block;
+  flex-shrink: 0;
 }
 @media (max-width: 860px) {
   .slide-two-col { grid-template-columns: 1fr; }
-  .diag-svg { max-width: 200px; }
+  .diag-svg { width: 200px; height: 200px; }
 }
 
 /* ---- Slide icon ---- */
