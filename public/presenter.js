@@ -67,7 +67,10 @@ function renderSlide(direction = 'next') {
     wrapper.appendChild(buildPollBox(activePoll));
   }
 
-  setTimeout(() => stage.appendChild(wrapper), existing ? 260 : 0);
+  setTimeout(() => {
+    stage.appendChild(wrapper);
+    stage.scrollTop = 0;
+  }, existing ? 260 : 0);
 
   // Poll button visibility
   $('pollBtn').hidden = !slide.poll;
