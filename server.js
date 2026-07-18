@@ -43,7 +43,13 @@ function participantSummary() {
 
 function pollPublicState() {
   if (!currentPoll) return null;
-  return { question: currentPoll.question, options: currentPoll.options, votes: currentPoll.votes };
+  return {
+    question: currentPoll.question,
+    options: currentPoll.options,
+    votes: currentPoll.votes,
+    correct: currentPoll.correct,
+    explanation: currentPoll.explanation
+  };
 }
 
 io.on('connection', (socket) => {
@@ -147,7 +153,9 @@ io.on('connection', (socket) => {
       question: slide.poll.question,
       options: slide.poll.options,
       votes: slide.poll.options.map(() => 0),
-      voters: new Set()
+      voters: new Set(),
+      correct: slide.poll.correct,
+      explanation: slide.poll.explanation
     };
     io.emit('poll:update', pollPublicState());
   });

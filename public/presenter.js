@@ -211,18 +211,26 @@ function buildBullets(bullets, baseDelay = 0.15) {
 
 function buildPollBox(poll) {
   const div = document.createElement('div');
-  div.className = 'poll-box';
-  div.id = 'pollBox';
-  const total = poll.votes.reduce((a, b) => a + b, 0) || 1;
-  const bars = poll.options.map((opt, i) => {
-    const pct = Math.round((poll.votes[i] / total) * 100);
-    return `<div class="poll-bar-row">
-      <div class="poll-bar-label">${opt}</div>
-      <div class="poll-bar-track"><div class="poll-bar-fill" style="width:${pct}%"></div></div>
-      <div class="poll-bar-count">${poll.votes[i]}</div>
+  div.className = 'poll-overlay';
+  div.id = 'pollOverlay';
+  const correctIdx = poll.correct != null ? poll.correct : -1;
+  const optionsHtml = poll.options.map((opt, i) => {
+    const isCorrect = i === correctIdx;
+    const cls = isCorrect ? 'poll-opt-correct' : 'poll-opt-wrong';
+    const icon = isCorrect ? '✅' : (correctIdx >= 0 ? '❌' : '');
+    return `<div class="poll-opt-row ${cls}">
+      <span class="poll-opt-icon">${icon}</span>
+      <span class="poll-opt-text">${opt}</span>
+      <span class="poll-opt-votes">${poll.votes[i]} suara</span>
     </div>`;
   }).join('');
-  div.innerHTML = `<div class="poll-question">📊 ${poll.question}</div>${bars}`;
+  div.innerHTML = `
+    <div class="poll-overlay-inner">
+      <div class="poll-question-large">📊 ${poll.question}</div>
+      <div class="poll-options-large">${optionsHtml}</div>
+      ${poll.explanation ? `<div class="poll-explanation">💡 ${poll.explanation}</div>` : ''}
+      <button class="poll-close-btn" onclick="document.getElementById('pollOverlay').remove();document.getElementById('endPollBtn').click();">Tutup Polling</button>
+    </div>`;
   return div;
 }
 
@@ -253,7 +261,7 @@ socket.on('reactions:update', (counts) => {
 
 socket.on('poll:update', (poll) => {
   activePoll = poll;
-  const existing = $('pollBox');
+  const existing = $('pollOverlay');
   if (!poll) {
     if (existing) existing.remove();
     $('pollBtn').hidden = !(content && content.slides[currentSlide].poll);
@@ -262,10 +270,8 @@ socket.on('poll:update', (poll) => {
   }
   $('pollBtn').hidden = true;
   $('endPollBtn').hidden = false;
-  const wrapper = document.querySelector('.slide-wrapper');
-  if (!wrapper) return;
   if (existing) existing.remove();
-  wrapper.appendChild(buildPollBox(poll));
+  document.body.appendChild(buildPollBox(poll));
 });
 
 // ---- Controls ----

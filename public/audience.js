@@ -86,29 +86,54 @@ socket.on('question:rejected', () => {
 });
 
 // ---- Poll ----
+function removePollOverlay() {
+  const existing = document.getElementById('audiencePollOverlay');
+  if (existing) existing.remove();
+  el('pollCard').hidden = true;
+}
+
 function renderPoll(poll) {
-  const card = el('pollCard');
-  if (!poll) { card.hidden = true; return; }
-  card.hidden = false;
+  removePollOverlay();
+  if (!poll) return;
   votedThisPoll = false;
-  el('pollQ').textContent = poll.question;
-  el('pollVoted').hidden = true;
-  const optionsEl = el('pollOptions');
-  optionsEl.innerHTML = '';
-  poll.options.forEach((opt, i) => {
-    const b = document.createElement('button');
-    b.className = 'poll-option-btn';
-    b.textContent = opt;
-    b.onclick = () => {
-      socket.emit('audience:pollVote', i);
-      optionsEl.querySelectorAll('.poll-option-btn').forEach(x => x.disabled = true);
-      b.classList.add('selected');
+  const correctIdx = poll.correct != null ? poll.correct : -1;
+  const optionsHtml = poll.options.map((opt, i) => {
+    const isCorrect = i === correctIdx;
+    const cls = isCorrect ? 'poll-opt-correct' : (correctIdx >= 0 ? 'poll-opt-wrong' : '');
+    const icon = isCorrect ? '✅' : (correctIdx >= 0 ? '❌' : '');
+    return `<button class="audience-poll-opt ${cls}" data-index="${i}">
+      <span class="audience-poll-icon">${icon}</span>
+      <span class="audience-poll-text">${opt}</span>
+    </button>`;
+  }).join('');
+  const overlay = document.createElement('div');
+  overlay.id = 'audiencePollOverlay';
+  overlay.innerHTML = `
+    <div class="audience-poll-overlay-inner">
+      <div class="audience-poll-question">📊 ${poll.question}</div>
+      <div class="audience-poll-options">${optionsHtml}</div>
+      <div class="audience-poll-result" id="audiencePollResult" hidden>
+        <div class="audience-poll-explanation">💡 ${poll.explanation || ''}</div>
+        <button class="audience-poll-close" onclick="removePollOverlay()">Tutup</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.querySelectorAll('.audience-poll-opt').forEach(btn => {
+    btn.onclick = () => {
+      if (votedThisPoll) return;
+      votedThisPoll = true;
+      const idx = Number(btn.dataset.index);
+      socket.emit('audience:pollVote', idx);
+      overlay.querySelectorAll('.audience-poll-opt').forEach(b => b.disabled = true);
+      btn.classList.add('selected');
+      setTimeout(() => {
+        document.getElementById('audiencePollResult').hidden = false;
+      }, 600);
     };
-    optionsEl.appendChild(b);
   });
 }
 socket.on('poll:update', renderPoll);
-socket.on('poll:voted', () => { el('pollVoted').hidden = false; });
+socket.on('poll:voted', () => {});
 
 // ---- End of presentation -> rating ----
 socket.on('presentation:ended', () => {

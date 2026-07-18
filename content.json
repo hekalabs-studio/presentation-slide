@@ -81,7 +81,9 @@
       "notes": "Banyak siswa bingung kenapa ada dua. Jelaskan hubungan hierarkis antara keduanya.",
       "poll": {
         "question": "Manakah persamaan lingkaran berpusat di (0,0) dengan jari-jari 4?",
-        "options": ["x² + y² = 4", "x² + y² = 16", "(x−4)² + y² = 0", "x + y = 4"]
+        "options": ["x² + y² = 4", "x² + y² = 16", "(x−4)² + y² = 0", "x + y = 4"],
+        "correct": 1,
+        "explanation": "Jawaban benar: x² + y² = 16. Karena r = 4, maka r² = 16. Persamaan lingkaran berpusat di (0,0) adalah x² + y² = r²."
       }
     },
     {
@@ -161,7 +163,9 @@
       "notes": "Tunjukkan simetri antara penurunan rumus lingkaran dan garis singgung — polanya sama.",
       "poll": {
         "question": "Garis singgung dan jari-jari di titik singgung membentuk sudut berapa?",
-        "options": ["45°", "60°", "90°", "180°"]
+        "options": ["45°", "60°", "90°", "180°"],
+        "correct": 2,
+        "explanation": "Jawaban benar: 90°. Garis singgung selalu tegak lurus (90°) terhadap jari-jari di titik singgung. Ini adalah sifat kunci yang menjadi dasar penurunan semua rumus garis singgung."
       }
     },
     {
