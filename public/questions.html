@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Daftar Pertanyaan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="questions.css">
+</head>
+<body>
+  <header>
+    <h1><span class="signal-dot"></span> Pertanyaan Masuk</h1>
+    <div class="stats">
+      <span id="totalQ">0 pertanyaan</span> ·
+      <span id="unansweredQ">0 belum dijawab</span>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-filter="all">Semua</button>
+    <button class="tab" data-filter="unanswered">Belum dijawab</button>
+    <button class="tab" data-filter="answered">Sudah dijawab</button>
+  </div>
+
+  <main id="list" class="list"></main>
+
+  <section class="ratings-section">
+    <h2>Rating &amp; Feedback Audiens</h2>
+    <div id="ratingSummary" class="rating-summary">Belum ada feedback masuk.</div>
+    <div id="ratingList" class="rating-list"></div>
+  </section>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="questions.js"></script>
+</body>
+</html>

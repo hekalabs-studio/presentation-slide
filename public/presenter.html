@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Presenter — Matematika Lanjut</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="presenter.css">
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="signal-dot"></span>
+      <span class="kelompok" id="namaKelompok">—</span>
+    </div>
+    <div class="dots" id="slideDots"></div>
+    <div class="topbar-right">
+      <span class="counter" id="slideCounter">1 / 1</span>
+      <a class="link-btn" href="/questions.html" target="_blank">Pertanyaan →</a>
+    </div>
+  </div>
+
+  <!-- Thin progress bar -->
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Main stage -->
+  <main class="stage" id="stage">
+    <!-- Slide content injected by JS -->
+  </main>
+
+  <!-- Side panel badges -->
+  <div class="side-panel">
+    <div class="badge" id="handsBadge" title="Tangan diangkat">
+      <span class="badge-icon">✋</span><span id="handsCount">0</span>
+    </div>
+    <div class="badge" id="reactionsBadge" title="Reaksi">
+      <span id="reactionsSummary">—</span>
+    </div>
+    <div class="badge" id="participantsBadge" title="Peserta terhubung">
+      <span class="badge-icon">📱</span><span id="participantsCount">0</span>
+    </div>
+  </div>
+
+  <!-- Hand list -->
+  <div class="hand-list" id="handList"></div>
+
+  <!-- Footer controls -->
+  <footer class="controls">
+    <button id="prevBtn" class="ctrl-btn">← Sebelumnya</button>
+    <button id="pollBtn" class="ctrl-btn ctrl-accent" hidden>📊 Mulai Polling</button>
+    <button id="endPollBtn" class="ctrl-btn ctrl-ghost" hidden>Selesai Polling</button>
+    <button id="nextBtn" class="ctrl-btn">Berikutnya →</button>
+    <button id="endBtn" class="ctrl-btn ctrl-ghost">Akhiri & minta feedback</button>
+  </footer>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="presenter.js"></script>
+</body>
+</html>

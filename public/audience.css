@@ -1,0 +1,156 @@
+body {
+  background: var(--paper);
+  color: var(--fg-on-paper);
+  font-family: var(--font-body);
+  margin: 0;
+  min-height: 100vh;
+}
+
+.screen { min-height: 100vh; display: flex; flex-direction: column; }
+.screen[hidden] { display: none !important; }
+
+/* ---- Join / End screens ---- */
+#joinScreen, #endScreen {
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.join-card { width: 100%; max-width: 380px; text-align: center; }
+.join-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.join-card h1 { font-family: var(--font-display); font-size: 28px; margin: 0 0 8px 0; }
+.join-sub { color: var(--slate); font-size: 14px; margin-bottom: 24px; }
+#nameInput, #feedbackInput, #questionInput {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line-on-paper);
+  margin-bottom: 12px;
+  background: white;
+  color: var(--fg-on-paper);
+}
+.btn-primary {
+  width: 100%;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  border: none;
+  background: var(--ink);
+  color: var(--fg-on-ink);
+  cursor: pointer;
+}
+.btn-primary:active { opacity: 0.85; }
+
+.stars-input { font-size: 40px; letter-spacing: 6px; color: var(--line-on-paper); margin-bottom: 16px; cursor: pointer; }
+.stars-input span.filled { color: var(--amber); }
+.rating-thanks { margin-top: 14px; color: var(--teal); font-weight: 600; }
+
+/* ---- Main screen ---- */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--slate);
+  border-bottom: 1px solid var(--line-on-paper);
+  position: sticky;
+  top: 0;
+  background: var(--paper);
+  z-index: 5;
+}
+
+.card {
+  margin: 16px 20px 0;
+  padding: 18px;
+  background: white;
+  border: 1px solid var(--line-on-paper);
+  border-radius: 14px;
+}
+.card-title {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--slate);
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.q-counter { font-family: var(--font-mono); color: var(--slate); }
+
+.hand-card { padding: 0; overflow: hidden; }
+.hand-btn {
+  width: 100%;
+  padding: 24px;
+  border: none;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--fg-on-paper);
+}
+.hand-icon { font-size: 32px; }
+.hand-btn.active { background: var(--amber); color: var(--ink); }
+
+.reactions-row { display: flex; gap: 10px; }
+.reaction-btn {
+  flex: 1;
+  font-size: 26px;
+  padding: 14px 0;
+  border-radius: 10px;
+  border: 1px solid var(--line-on-paper);
+  background: var(--paper-soft);
+  cursor: pointer;
+}
+.reaction-btn:active { transform: scale(0.94); background: var(--teal); }
+
+.poll-card { border-color: var(--teal); }
+.poll-q { font-family: var(--font-display); font-size: 17px; margin-bottom: 12px; }
+.poll-options { display: flex; flex-direction: column; gap: 8px; }
+.poll-option-btn {
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line-on-paper);
+  background: var(--paper-soft);
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+.poll-option-btn.selected { background: var(--teal); border-color: var(--teal); font-weight: 600; }
+.poll-option-btn:disabled { opacity: 0.7; }
+.poll-voted { margin-top: 10px; color: var(--teal); font-size: 13px; font-weight: 600; }
+
+.btn-secondary {
+  width: 100%;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.btn-secondary:disabled { opacity: 0.35; border-color: var(--slate); color: var(--slate); cursor: not-allowed; }
+.q-hint { font-size: 12px; color: var(--coral); margin-top: 8px; min-height: 16px; }
+
+#mainScreen { padding-bottom: 40px; }
