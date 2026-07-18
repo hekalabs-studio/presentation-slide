@@ -40,17 +40,10 @@ function renderSlide(direction = 'next') {
   const slide = content.slides[currentSlide];
   const stage = $('stage');
 
-  // Animate out existing wrapper
   const existing = stage.querySelector('.slide-wrapper');
-  if (existing) {
-    existing.classList.add('exit');
-    setTimeout(() => existing.remove(), 280);
-  }
-
   const wrapper = document.createElement('div');
   wrapper.className = 'slide-wrapper';
 
-  // Route to correct renderer
   const type = slide.type || 'default';
   switch (type) {
     case 'cover':       wrapper.appendChild(buildCover(slide)); break;
@@ -62,14 +55,20 @@ function renderSlide(direction = 'next') {
     default:            wrapper.appendChild(buildDefault(slide)); break;
   }
 
-  // Poll box (shared across types)
   if (activePoll) {
     wrapper.appendChild(buildPollBox(activePoll));
   }
 
-  setTimeout(() => stage.appendChild(wrapper), existing ? 260 : 0);
+  if (existing) {
+    existing.addEventListener('animationend', () => {
+      existing.remove();
+      stage.appendChild(wrapper);
+    }, { once: true });
+    existing.classList.add('exit');
+  } else {
+    stage.appendChild(wrapper);
+  }
 
-  // Poll button visibility
   $('pollBtn').hidden = !slide.poll;
   updateProgress();
   renderDots();
