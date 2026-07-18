@@ -215,11 +215,7 @@ function buildPollBox(poll) {
   div.id = 'pollOverlay';
   const correctIdx = poll.correct != null ? poll.correct : -1;
   const optionsHtml = poll.options.map((opt, i) => {
-    const isCorrect = i === correctIdx;
-    const cls = isCorrect ? 'poll-opt-correct' : 'poll-opt-wrong';
-    const icon = isCorrect ? '✅' : (correctIdx >= 0 ? '❌' : '');
-    return `<div class="poll-opt-row ${cls}">
-      <span class="poll-opt-icon">${icon}</span>
+    return `<div class="poll-opt-row" data-index="${i}">
       <span class="poll-opt-text">${opt}</span>
       <span class="poll-opt-votes">${poll.votes[i]} suara</span>
     </div>`;
@@ -227,10 +223,42 @@ function buildPollBox(poll) {
   div.innerHTML = `
     <div class="poll-overlay-inner">
       <div class="poll-question-large">📊 ${poll.question}</div>
-      <div class="poll-options-large">${optionsHtml}</div>
-      ${poll.explanation ? `<div class="poll-explanation">💡 ${poll.explanation}</div>` : ''}
-      <button class="poll-close-btn" onclick="document.getElementById('pollOverlay').remove();document.getElementById('endPollBtn').click();">Tutup Polling</button>
+      <div class="poll-countdown" id="pollCountdown">⏱️ 60 detik tersisa</div>
+      <div class="poll-options-large" id="pollOptionsContainer">${optionsHtml}</div>
+      <div class="poll-explanation" id="pollExplanation" hidden>💡 ${poll.explanation || ''}</div>
+      <button class="poll-close-btn" id="pollCloseBtn">Tutup Polling</button>
     </div>`;
+  const countdownEl = div.querySelector('#pollCountdown');
+  const optionsContainer = div.querySelector('#pollOptionsContainer');
+  const explanationEl = div.querySelector('#pollExplanation');
+  let timeLeft = 60;
+  const timer = setInterval(() => {
+    timeLeft--;
+    if (countdownEl) countdownEl.textContent = `⏱️ ${timeLeft} detik tersisa`;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      if (countdownEl) countdownEl.hidden = true;
+      revealPollAnswers();
+    }
+  }, 1000);
+  function revealPollAnswers() {
+    const rows = optionsContainer.querySelectorAll('.poll-opt-row');
+    rows.forEach((row, i) => {
+      const isCorrect = i === correctIdx;
+      row.classList.add(isCorrect ? 'poll-opt-correct' : 'poll-opt-wrong');
+      const iconEl = document.createElement('span');
+      iconEl.className = 'poll-opt-icon';
+      iconEl.textContent = isCorrect ? '✅' : '❌';
+      row.insertBefore(iconEl, row.firstChild);
+    });
+    if (explanationEl) explanationEl.hidden = false;
+  }
+  div.querySelector('#pollCloseBtn').onclick = () => {
+    clearInterval(timer);
+    const el = document.getElementById('pollOverlay');
+    if (el) el.remove();
+    socket.emit('presenter:endPoll');
+  };
   return div;
 }
 

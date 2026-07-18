@@ -101,7 +101,7 @@ function renderPoll(poll) {
     const isCorrect = i === correctIdx;
     const cls = isCorrect ? 'poll-opt-correct' : (correctIdx >= 0 ? 'poll-opt-wrong' : '');
     const icon = isCorrect ? '✅' : (correctIdx >= 0 ? '❌' : '');
-    return `<button class="audience-poll-opt ${cls}" data-index="${i}">
+    return `<button class="audience-poll-opt ${cls}" data-index="${i}" disabled>
       <span class="audience-poll-icon">${icon}</span>
       <span class="audience-poll-text">${opt}</span>
     </button>`;
@@ -111,24 +111,46 @@ function renderPoll(poll) {
   overlay.innerHTML = `
     <div class="audience-poll-overlay-inner">
       <div class="audience-poll-question">📊 ${poll.question}</div>
-      <div class="audience-poll-options">${optionsHtml}</div>
+      <div class="audience-poll-countdown" id="audiencePollCountdown">⏱️ 60 detik tersisa</div>
+      <div class="audience-poll-options" id="audiencePollOptions">${optionsHtml}</div>
       <div class="audience-poll-result" id="audiencePollResult" hidden>
         <div class="audience-poll-explanation">💡 ${poll.explanation || ''}</div>
         <button class="audience-poll-close" onclick="removePollOverlay()">Tutup</button>
       </div>
     </div>`;
   document.body.appendChild(overlay);
-  overlay.querySelectorAll('.audience-poll-opt').forEach(btn => {
+  const btns = overlay.querySelectorAll('.audience-poll-opt');
+  const countdownEl = overlay.querySelector('#audiencePollCountdown');
+  const optionsContainer = overlay.querySelector('#audiencePollOptions');
+  const resultEl = overlay.querySelector('#audiencePollResult');
+  let timeLeft = 60;
+  const timer = setInterval(() => {
+    timeLeft--;
+    if (countdownEl) countdownEl.textContent = `⏱️ ${timeLeft} detik tersisa`;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      if (countdownEl) countdownEl.hidden = true;
+      btns.forEach(b => b.disabled = false);
+      revealAudienceAnswers();
+    }
+  }, 1000);
+  function revealAudienceAnswers() {
+    btns.forEach((btn, i) => {
+      const isCorrect = i === correctIdx;
+      btn.classList.add(isCorrect ? 'poll-opt-correct' : 'poll-opt-wrong');
+      const iconEl = btn.querySelector('.audience-poll-icon');
+      if (iconEl) iconEl.textContent = isCorrect ? '✅' : '❌';
+    });
+    resultEl.hidden = false;
+  }
+  btns.forEach(btn => {
     btn.onclick = () => {
       if (votedThisPoll) return;
       votedThisPoll = true;
       const idx = Number(btn.dataset.index);
       socket.emit('audience:pollVote', idx);
-      overlay.querySelectorAll('.audience-poll-opt').forEach(b => b.disabled = true);
       btn.classList.add('selected');
-      setTimeout(() => {
-        document.getElementById('audiencePollResult').hidden = false;
-      }, 600);
+      btn.disabled = true;
     };
   });
 }
