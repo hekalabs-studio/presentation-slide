@@ -86,75 +86,77 @@ socket.on('question:rejected', () => {
 });
 
 // ---- Poll ----
+let audiencePollOverlay = null;
+let audienceVoted = false;
+
 function removePollOverlay() {
-  const existing = document.getElementById('audiencePollOverlay');
-  if (existing) existing.remove();
+  if (audiencePollOverlay) {
+    audiencePollOverlay.remove();
+    audiencePollOverlay = null;
+  }
   el('pollCard').hidden = true;
+  audienceVoted = false;
 }
 
-function renderPoll(poll) {
+function updateAudienceVoteCounts(poll) {
+  if (!audiencePollOverlay) return;
+  const voteSpans = audiencePollOverlay.querySelectorAll('.audience-poll-votes');
+  poll.votes.forEach((count, i) => {
+    if (voteSpans[i]) voteSpans[i].textContent = `${count} suara`;
+  });
+}
+
+function createAudiencePoll(poll) {
   removePollOverlay();
   if (!poll) return;
-  votedThisPoll = false;
-  const correctIdx = poll.correct != null ? poll.correct : -1;
+  
   const optionsHtml = poll.options.map((opt, i) => {
-    const isCorrect = i === correctIdx;
-    const cls = isCorrect ? 'poll-opt-correct' : (correctIdx >= 0 ? 'poll-opt-wrong' : '');
-    const icon = isCorrect ? '✅' : (correctIdx >= 0 ? '❌' : '');
-    return `<button class="audience-poll-opt ${cls}" data-index="${i}" disabled>
-      <span class="audience-poll-icon">${icon}</span>
+    return `<button class="audience-poll-opt" data-index="${i}">
       <span class="audience-poll-text">${opt}</span>
+      <span class="audience-poll-votes">0 suara</span>
     </button>`;
   }).join('');
+  
   const overlay = document.createElement('div');
   overlay.id = 'audiencePollOverlay';
+  overlay.className = 'audience-poll-overlay';
   overlay.innerHTML = `
     <div class="audience-poll-overlay-inner">
       <div class="audience-poll-question">📊 ${poll.question}</div>
-      <div class="audience-poll-countdown" id="audiencePollCountdown">⏱️ 60 detik tersisa</div>
-      <div class="audience-poll-options" id="audiencePollOptions">${optionsHtml}</div>
-      <div class="audience-poll-result" id="audiencePollResult" hidden>
-        <div class="audience-poll-explanation">💡 ${poll.explanation || ''}</div>
-        <button class="audience-poll-close" onclick="removePollOverlay()">Tutup</button>
-      </div>
+      <div class="audience-poll-options">${optionsHtml}</div>
     </div>`;
   document.body.appendChild(overlay);
+  audiencePollOverlay = overlay;
+  
   const btns = overlay.querySelectorAll('.audience-poll-opt');
-  const countdownEl = overlay.querySelector('#audiencePollCountdown');
-  const optionsContainer = overlay.querySelector('#audiencePollOptions');
-  const resultEl = overlay.querySelector('#audiencePollResult');
-  let timeLeft = 60;
-  const timer = setInterval(() => {
-    timeLeft--;
-    if (countdownEl) countdownEl.textContent = `⏱️ ${timeLeft} detik tersisa`;
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      if (countdownEl) countdownEl.hidden = true;
-      btns.forEach(b => b.disabled = false);
-      revealAudienceAnswers();
-    }
-  }, 1000);
-  function revealAudienceAnswers() {
-    btns.forEach((btn, i) => {
-      const isCorrect = i === correctIdx;
-      btn.classList.add(isCorrect ? 'poll-opt-correct' : 'poll-opt-wrong');
-      const iconEl = btn.querySelector('.audience-poll-icon');
-      if (iconEl) iconEl.textContent = isCorrect ? '✅' : '❌';
-    });
-    resultEl.hidden = false;
-  }
   btns.forEach(btn => {
     btn.onclick = () => {
-      if (votedThisPoll) return;
-      votedThisPoll = true;
+      if (audienceVoted) return;
+      audienceVoted = true;
       const idx = Number(btn.dataset.index);
       socket.emit('audience:pollVote', idx);
+      btns.forEach(b => b.disabled = true);
       btn.classList.add('selected');
-      btn.disabled = true;
     };
   });
 }
-socket.on('poll:update', renderPoll);
+
+socket.on('poll:update', (poll) => {
+  if (!poll) {
+    removePollOverlay();
+    return;
+  }
+  if (audiencePollOverlay) {
+    const currentQuestion = audiencePollOverlay.querySelector('.audience-poll-question');
+    if (currentQuestion && currentQuestion.textContent.trim() !== poll.question) {
+      createAudiencePoll(poll);
+    } else {
+      updateAudienceVoteCounts(poll);
+    }
+  } else {
+    createAudiencePoll(poll);
+  }
+});
 socket.on('poll:voted', () => {});
 
 // ---- End of presentation -> rating ----
