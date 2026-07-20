@@ -90,6 +90,15 @@ socket.on('question:rejected', ({ reason }) => {
   }
 });
 
+socket.on('questions:reset', () => {
+  questionsAsked = 0;
+  maxQuestions = 3;
+  updateQCounter();
+  el('qHint').textContent = '';
+  el('qHint').style.color = '';
+  el('questionInput').value = '';
+});
+
 // ---- Poll ----
 let audiencePollOverlay = null;
 let audienceVoted = false;

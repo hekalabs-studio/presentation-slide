@@ -328,6 +328,7 @@ $('prevBtn').onclick = () => nav('presenter:prevSlide');
 $('nextBtn').onclick = () => nav('presenter:nextSlide');
 $('pollBtn').onclick = () => socket.emit('presenter:startPoll');
 $('endPollBtn').onclick = () => socket.emit('presenter:endPoll');
+$('resetQBtn').onclick = () => socket.emit('presenter:resetQuestions');
 $('endBtn').onclick = () => {
   if (confirm('Akhiri presentasi dan minta feedback dari semua peserta?')) {
     socket.emit('presenter:endPresentation');

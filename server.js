@@ -185,6 +185,14 @@ io.on('connection', (socket) => {
     io.to('audience').emit('presentation:ended');
   });
 
+  socket.on('presenter:resetQuestions', () => {
+    questions = [];
+    questionSeq = 1;
+    Object.values(participants).forEach(p => { p.questionsAsked = 0; });
+    io.to('presenter').emit('questions:update', questions);
+    io.to('audience').emit('questions:reset');
+  });
+
   socket.on('audience:rating', ({ stars, feedback }) => {
     const p = participants[socket.id];
     ratings.push({ name: p ? p.name : 'Anonim', stars: Math.max(1, Math.min(5, Number(stars) || 0)), feedback: (feedback || '').slice(0, 500) });
