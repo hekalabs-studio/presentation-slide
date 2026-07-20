@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
     socket.emit('joined', {
       state: { ...state, totalSlides: content.slides.length },
       maxQuestions: MAX_QUESTIONS,
-      questionsAsked: 0,
+      questionsAsked: questions.length,
       poll: pollPublicState()
     });
     io.to('presenter').emit('participants:update', participantSummary());
@@ -121,15 +121,19 @@ io.on('connection', (socket) => {
     if (!p) return;
     const clean = (text || '').trim().slice(0, 300);
     if (!clean) return;
-    if (p.questionsAsked >= MAX_QUESTIONS) {
-      socket.emit('question:rejected', { reason: 'limit' });
+    if (questions.length >= MAX_QUESTIONS) {
+      socket.emit('question:rejected', { reason: 'session-limit' });
+      return;
+    }
+    if (p.questionsAsked >= 1) {
+      socket.emit('question:rejected', { reason: 'user-limit' });
       return;
     }
     p.questionsAsked++;
     const q = { id: questionSeq++, name: p.name, text: clean, answered: false, ts: Date.now() };
     questions.push(q);
     io.to('presenter').emit('questions:update', questions);
-    socket.emit('question:accepted', { questionsAsked: p.questionsAsked, maxQuestions: MAX_QUESTIONS });
+    socket.emit('question:accepted', { questionsAsked: p.questionsAsked, maxQuestions: 1, sessionRemaining: MAX_QUESTIONS - questions.length });
   });
 
   socket.on('presenter:markAnswered', (id) => {

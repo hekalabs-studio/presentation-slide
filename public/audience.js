@@ -61,7 +61,7 @@ document.querySelectorAll('.reaction-btn').forEach(btn => {
 function updateQCounter() {
   el('qCounter').textContent = `${questionsAsked}/${maxQuestions}`;
   el('askBtn').disabled = questionsAsked >= maxQuestions;
-  el('qHint').textContent = questionsAsked >= maxQuestions ? 'Batas 3 pertanyaan sudah tercapai.' : '';
+  el('qHint').textContent = questionsAsked >= maxQuestions ? 'Batas 3 pertanyaan sesi ini sudah tercapai.' : '';
 }
 
 el('askBtn').onclick = () => {
@@ -70,9 +70,9 @@ el('askBtn').onclick = () => {
   socket.emit('audience:question', text);
 };
 
-socket.on('question:accepted', ({ questionsAsked: qa, maxQuestions: mq }) => {
-  questionsAsked = qa;
-  maxQuestions = mq;
+socket.on('question:accepted', ({ questionsAsked: qa, maxQuestions: mq, sessionRemaining }) => {
+  questionsAsked = sessionRemaining != null ? maxQuestions - sessionRemaining : qa;
+  maxQuestions = mq || 3;
   el('questionInput').value = '';
   el('qHint').style.color = 'var(--teal)';
   el('qHint').textContent = 'Terkirim ke presenter ✓';
@@ -80,9 +80,14 @@ socket.on('question:accepted', ({ questionsAsked: qa, maxQuestions: mq }) => {
   setTimeout(() => { if (questionsAsked < maxQuestions) el('qHint').textContent = ''; }, 2000);
 });
 
-socket.on('question:rejected', () => {
-  el('qHint').style.color = 'var(--coral)';
-  el('qHint').textContent = 'Batas 3 pertanyaan sudah tercapai.';
+socket.on('question:rejected', ({ reason }) => {
+  if (reason === 'session-limit') {
+    el('qHint').style.color = 'var(--coral)';
+    el('qHint').textContent = 'Batas 3 pertanyaan sesi ini sudah tercapai.';
+  } else if (reason === 'user-limit') {
+    el('qHint').style.color = 'var(--coral)';
+    el('qHint').textContent = 'Kamu hanya bisa mengirim 1 pertanyaan per sesi.';
+  }
 });
 
 // ---- Poll ----
