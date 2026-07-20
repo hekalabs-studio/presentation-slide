@@ -320,8 +320,14 @@ socket.on('poll:update', (poll) => {
   }
   $('pollBtn').hidden = true;
   $('endPollBtn').hidden = false;
-  if (existing) existing.remove();
-  document.body.appendChild(buildPollBox(poll));
+  if (existing) {
+    const voteEls = existing.querySelectorAll('.poll-opt-votes');
+    poll.votes.forEach((count, i) => {
+      if (voteEls[i]) voteEls[i].textContent = `${count} suara`;
+    });
+  } else {
+    document.body.appendChild(buildPollBox(poll));
+  }
 });
 
 // ---- Controls ----
