@@ -170,8 +170,27 @@ socket.on('poll:update', (poll) => {
   } else {
     createAudiencePoll(poll);
   }
+  if (poll.revealed && audiencePollOverlay && audienceVoted) {
+    revealAudienceAnswer(poll);
+  }
 });
-socket.on('poll:voted', () => {});
+
+function revealAudienceAnswer(poll) {
+  if (!audiencePollOverlay) return;
+  const selectedBtn = audiencePollOverlay.querySelector('.audience-poll-opt.selected');
+  if (!selectedBtn) return;
+  const idx = Number(selectedBtn.dataset.index);
+  const isCorrect = idx === poll.correct;
+  selectedBtn.classList.add(isCorrect ? 'audience-poll-opt-correct' : 'audience-poll-opt-wrong');
+  const iconEl = document.createElement('span');
+  iconEl.className = 'audience-poll-icon';
+  iconEl.textContent = isCorrect ? '✅' : '❌';
+  selectedBtn.insertBefore(iconEl, selectedBtn.querySelector('.audience-poll-text'));
+  const allBtns = audiencePollOverlay.querySelectorAll('.audience-poll-opt');
+  allBtns.forEach((btn, i) => {
+    if (i !== idx) btn.disabled = true;
+  });
+}
 
 // ---- End of presentation -> rating ----
 socket.on('presentation:ended', () => {

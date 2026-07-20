@@ -174,6 +174,18 @@ body {
   border-color: var(--teal);
   background: rgba(79, 209, 197, 0.08);
 }
+.audience-poll-opt.audience-poll-opt-correct {
+  border-color: var(--teal);
+  background: rgba(79, 209, 197, 0.15);
+}
+.audience-poll-opt.audience-poll-opt-wrong {
+  border-color: var(--coral);
+  background: rgba(255, 107, 107, 0.1);
+}
+.audience-poll-icon {
+  font-size: clamp(22px, 2.2vw, 32px);
+  flex-shrink: 0;
+}
 .audience-poll-text {
   flex: 1;
   font-weight: 600;

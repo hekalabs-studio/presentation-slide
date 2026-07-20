@@ -258,6 +258,7 @@ function buildPollBox(poll) {
     }
   }, 1000);
   function revealPollAnswers() {
+    socket.emit('presenter:revealPoll');
     const rows = optionsContainer.querySelectorAll('.poll-opt-row');
     rows.forEach((row, i) => {
       const isCorrect = i === correctIdx;

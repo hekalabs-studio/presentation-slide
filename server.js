@@ -48,7 +48,8 @@ function pollPublicState() {
     options: currentPoll.options,
     votes: currentPoll.votes,
     correct: currentPoll.correct,
-    explanation: currentPoll.explanation
+    explanation: currentPoll.explanation,
+    revealed: currentPoll.revealed
   };
 }
 
@@ -159,8 +160,15 @@ io.on('connection', (socket) => {
       votes: slide.poll.options.map(() => 0),
       voters: new Set(),
       correct: slide.poll.correct,
-      explanation: slide.poll.explanation
+      explanation: slide.poll.explanation,
+      revealed: false
     };
+    io.emit('poll:update', pollPublicState());
+  });
+
+  socket.on('presenter:revealPoll', () => {
+    if (!currentPoll) return;
+    currentPoll.revealed = true;
     io.emit('poll:update', pollPublicState());
   });
 
